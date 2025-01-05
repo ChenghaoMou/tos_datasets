@@ -4,8 +4,22 @@ version = "0.1.0"
 description = "A collection of TOS datasets"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "marimo>=0.10.6",
+    "pandas>=2.2.3",
+    "datasets>=3.2.0",
+    "pymupdf>=1.25.1",
+    "openpyxl>=3.1.5",
+    "loguru>=0.7.3",
+    "gitpython>=3.1.44",
+]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "anthropic>=0.42.0",
+    "requests>=2.32.3",
+]
