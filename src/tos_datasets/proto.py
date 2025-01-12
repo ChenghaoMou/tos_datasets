@@ -34,6 +34,7 @@ class QA(BaseModel):
 class Classification(BaseModel):
     level: Annotated[str, "The level of the classification"]
     labels: Annotated[list[str], "The labels of the classification"]
+    label_definitions: Annotated[list[list[str]] | None, "The definitions of the labels"] = None
     
 
 class DocumentQA(BaseModel):

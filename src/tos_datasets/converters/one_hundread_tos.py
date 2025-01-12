@@ -1,4 +1,5 @@
 import zipfile
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Generator
 
@@ -15,10 +16,12 @@ from tos_datasets.proto import (
 )
 
 
+@contextmanager
 def download_and_unzip(
     url: str = "https://prod-dcd-datasets-cache-zipfiles.s3.eu-west-1.amazonaws.com/dtbj87j937-3.zip",
+    cache_dir: Path = Path.home() / ".cache" / "100_tos",
+    keep_cache: bool = True,
 ):
-    cache_dir = Path.home() / ".cache" / "100_tos"
     cache_dir.mkdir(parents=True, exist_ok=True)
     zip_path = cache_dir / "100_tos.zip"
 
@@ -34,7 +37,10 @@ def download_and_unzip(
         with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall(cache_dir)
 
-    return extract_dir
+    yield extract_dir
+
+    if not keep_cache:
+        cache_dir.unlink()
 
 
 def load_annotations(local_dir: Path) -> pd.DataFrame:
@@ -114,13 +120,27 @@ def convert(
 
 if __name__ == "__main__":
     import datasets
+    import typer
+    from rich import print
 
-    local_dir = download_and_unzip()
-    logger.info(f"Downloaded and unzipped to {local_dir}")
-    annotations = load_annotations(local_dir)
-    definitions = load_definitions(local_dir)
+    from tos_datasets.proto import DocumentEUConsumerLawAnnotation
 
-    df = pd.DataFrame(list(convert(annotations, definitions)))
-    ds = datasets.Dataset.from_pandas(df)
-    ds = ds.rename_column("0", "document")
-    ds.push_to_hub("chenghao/tos_pp_dataset", "100_tos")
+    def main(
+        push_to_hub: bool = False,
+        keep_cache: bool = True,
+        cache_dir: Path = Path.home() / ".cache" / "100_tos",
+    ):
+        with download_and_unzip(cache_dir=cache_dir, keep_cache=keep_cache) as local_dir:
+            annotations = load_annotations(local_dir)
+            definitions = load_definitions(local_dir)
+
+        df = pd.DataFrame(list(convert(annotations, definitions)))
+        ds = datasets.Dataset.from_pandas(df)
+        ds = ds.rename_column("0", "document")
+
+        print(DocumentEUConsumerLawAnnotation.model_validate_json(ds["document"][0]))
+
+        if push_to_hub:
+            ds.push_to_hub("chenghao/tos_pp_dataset", "100_tos")
+
+    typer.run(main)
