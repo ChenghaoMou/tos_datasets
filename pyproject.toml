@@ -24,4 +24,5 @@ build-backend = "hatchling.build"
 dev-dependencies = [
     "anthropic>=0.42.0",
     "requests>=2.32.3",
+    "ruff>=0.8.6",
 ]
