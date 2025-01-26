@@ -115,6 +115,9 @@ print(DocumentClassification.model_validate_json(ds["document"][0]))
 
 ### PolicyQA
 
+> [!IMPORTANT]
+> This dataset seems to have some annotation issues where __unanswerable__ questions are still answered with SQuAD-v1 format instead of the v2 format.
+
 From [PolicyQA](https://github.com/wasiahmad/PolicyQA), MIT (subset: `privacy_glue/policy_qa`).
 
 <details>
