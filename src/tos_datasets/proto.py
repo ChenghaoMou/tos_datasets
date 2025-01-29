@@ -8,11 +8,19 @@ class Document(BaseModel):
     text: Annotated[Optional[str], "The full text of the document"] = None
     paragraphs: Annotated[Optional[list[str]], "The paragraphs of the document"] = None
     sentences: Annotated[Optional[list[str]], "The sentences of the document"] = None
+    tokens: Annotated[Optional[list[str]], "The tokens of the document"] = None
     language: Annotated[Optional[str], "The language of the document"] = None
 
     @model_validator(mode="before")
     def check_at_least_one(cls, data: dict) -> dict:
-        if not any([data.get("text"), data.get("paragraphs"), data.get("sentences")]):
+        if not any(
+            [
+                data.get("text"),
+                data.get("paragraphs"),
+                data.get("sentences"),
+                data.get("tokens"),
+            ]
+        ):
             raise ValueError(
                 "At least one of text, paragraphs, or sentences must be provided."
             )
