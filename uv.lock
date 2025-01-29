@@ -1051,15 +1051,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pyconll"
-version = "3.2.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/16/67/37e18cb1e47db43ed6ba51734e631d72e3fe59df64aedf435c471bbd27d4/pyconll-3.2.0.tar.gz", hash = "sha256:402aca6b8e769caea8440aa33a04adf5e0fe060a0fa128178a91f5b986107b19", size = 27721 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/70/ca/722852b75919610fd01c293ffcbcf72eb58d0f4fec014fd67ec13a6b9dad/pyconll-3.2.0-py3-none-any.whl", hash = "sha256:6106a1136dfe6a524e41228b35b4f4aaae17bebe62d4aafc480feeb2b7ca769d", size = 27187 },
-]
-
-[[package]]
 name = "pydantic"
 version = "2.10.4"
 source = { registry = "https://pypi.org/simple" }
@@ -1442,7 +1433,6 @@ dependencies = [
     { name = "nltk" },
     { name = "openpyxl" },
     { name = "pandas" },
-    { name = "pyconll" },
     { name = "pymupdf" },
     { name = "rich" },
     { name = "typer" },
@@ -1464,7 +1454,6 @@ requires-dist = [
     { name = "nltk", specifier = ">=3.9.1" },
     { name = "openpyxl", specifier = ">=3.1.5" },
     { name = "pandas", specifier = ">=2.2.3" },
-    { name = "pyconll", specifier = ">=3.2.0" },
     { name = "pymupdf", specifier = ">=1.25.1" },
     { name = "rich", specifier = ">=13.9.4" },
     { name = "typer", specifier = ">=0.15.1" },
