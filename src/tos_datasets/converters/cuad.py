@@ -38,6 +38,7 @@ def download_and_unzip(
     if not keep_cache:
         cache_dir.unlink()
 
+
 def load_annotations(local_dir: Path):
     with open(local_dir / "CUAD_v1.json") as f:
         data = json.load(f)
@@ -103,18 +104,21 @@ if __name__ == "__main__":
         keep_cache: bool = True,
         cache_dir: Path = Path.home() / ".cache" / "cuad",
     ):
-        with download_and_unzip(cache_dir=cache_dir, keep_cache=keep_cache) as local_dir:
+        with download_and_unzip(
+            cache_dir=cache_dir, keep_cache=keep_cache
+        ) as local_dir:
             service_files = list(collect_target_files(local_dir, target))
             annotations = load_annotations(local_dir)
             dicts = list(annotate(service_files, annotations))
-        
+
         ds = datasets.Dataset.from_pandas(pd.DataFrame(dicts))
         ds = ds.rename_column("0", "document")
 
         # print(ds["document"][0])
         from tos_datasets.proto import DocumentQA
+
         print(DocumentQA.model_validate_json(ds["document"][0]))
-        
+
         if push_to_hub:
             ds.push_to_hub("chenghao/tos_pp_dataset", "cuad")
 

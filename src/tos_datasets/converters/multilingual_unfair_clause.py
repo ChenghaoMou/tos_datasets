@@ -31,8 +31,8 @@ def load_tags(repo_path: Path):
         tags = [tag.strip() for tag in tags if tag.strip()]
     return tags
 
-def tag_definition(tag: str):
 
+def tag_definition(tag: str):
     #     The existing annotations identify nine different
     # categories for clause unfairness establishing: (1) jurisdiction for disputes in a coun-
     # try different than consumer’s residence (<j>); (2) choice of a foreign law governing
@@ -52,21 +52,24 @@ def tag_definition(tag: str):
         return None
 
     name, score = tag[:-1], int(tag[-1])
-    return ({
-        "j": "jurisdiction for disputes in a country different than consumer’s residence",
-        "law": "choice of a foreign law governing the contract",
-        "ltd": "limitation of liability",
-        "ter": "the provider’s right to unilaterally terminate the contract/access to the service",
-        "ch": "the provider’s right to unilaterally modify the contract/the service",
-        "a": "requiring a consumer to undertake arbitration before the court proceedings can commence",
-        "cr": "the provider retaining the right to unilaterally remove consumer content from the service, including in-app purchases",
-        "use": "having a consumer accept the agreement simply by using the service, not only without reading it, but even without having to click on “I agree/I accept”",
-        "pinc": "the scope of consent granted to the ToS also takes in the privacy policy, which forms part of the “General Agreement”",
-    }[name], {
-        1: "clearly fair",
-        2: "potentially unfair",
-        3: "clearly unfair",
-    }[score])
+    return (
+        {
+            "j": "jurisdiction for disputes in a country different than consumer’s residence",
+            "law": "choice of a foreign law governing the contract",
+            "ltd": "limitation of liability",
+            "ter": "the provider’s right to unilaterally terminate the contract/access to the service",
+            "ch": "the provider’s right to unilaterally modify the contract/the service",
+            "a": "requiring a consumer to undertake arbitration before the court proceedings can commence",
+            "cr": "the provider retaining the right to unilaterally remove consumer content from the service, including in-app purchases",
+            "use": "having a consumer accept the agreement simply by using the service, not only without reading it, but even without having to click on “I agree/I accept”",
+            "pinc": "the scope of consent granted to the ToS also takes in the privacy policy, which forms part of the “General Agreement”",
+        }[name],
+        {
+            1: "clearly fair",
+            2: "potentially unfair",
+            3: "clearly unfair",
+        }[score],
+    )
 
 
 def load_clauses(repo_path: Path) -> Generator[str, None, None]:
@@ -95,15 +98,17 @@ def load_clauses(repo_path: Path) -> Generator[str, None, None]:
             for sentence, annotation in zip(sentences, annotations):
                 curr_tags = [
                     t
-                    for t in
-                    annotation.strip().split(" ") if t.strip()
+                    for t in annotation.strip().split(" ")
+                    if t.strip()
                     if tag_definition(t)
                 ]
-                clauses.append(Classification(
-                    level="sentence",
-                    labels=curr_tags,
-                    label_definitions=[tag_definition(t) for t in curr_tags],
-                ))
+                clauses.append(
+                    Classification(
+                        level="sentence",
+                        labels=curr_tags,
+                        label_definitions=[tag_definition(t) for t in curr_tags],
+                    )
+                )
             yield DocumentClassification(
                 document=doc, classifications=clauses
             ).model_dump_json()

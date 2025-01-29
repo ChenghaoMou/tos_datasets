@@ -1,7 +1,6 @@
 from collections import defaultdict
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Generator
 
 import datasets
 from git import Repo

@@ -1,20 +1,14 @@
-import json
-import zipfile
 from collections import defaultdict
 from contextlib import contextmanager
-from itertools import groupby
 from pathlib import Path
 
 import datasets
-import pyconll
 from git import Repo
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 
 from tos_datasets.proto import (
     Document,
-    DocumentEvent,
     DocumentSequenceClassification,
-    Event,
     Tag,
 )
 

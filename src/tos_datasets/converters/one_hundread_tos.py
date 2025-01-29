@@ -130,7 +130,9 @@ if __name__ == "__main__":
         keep_cache: bool = True,
         cache_dir: Path = Path.home() / ".cache" / "100_tos",
     ):
-        with download_and_unzip(cache_dir=cache_dir, keep_cache=keep_cache) as local_dir:
+        with download_and_unzip(
+            cache_dir=cache_dir, keep_cache=keep_cache
+        ) as local_dir:
             annotations = load_annotations(local_dir)
             definitions = load_definitions(local_dir)
 
