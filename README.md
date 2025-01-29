@@ -153,6 +153,24 @@ print(DocumentEvent.model_validate_json(ds["train"]["type_ii"][0]))
 
 </details>
 
+### Policy Detection
+
+From [policy-detection-data](<https://github.com/infsys-lab/policy-detection-data>, GPL 3.0 (subset: `privacy_glue/policy_detection`).
+
+<details>
+<summary>Code</summary>
+
+```python
+import datasets
+from tos_datasets.proto import DocumentClassification
+
+ds = datasets.load_dataset("chenghao/tos_pp_dataset", "privacy_glue/policy_detection")
+
+print(DocumentClassification.model_validate_json(ds["train"]["document"][0]))
+```
+
+</details>
+
 ## WIP
 
 - <del>[Annotated Italian TOS sentences](https://github.com/i3-fbk/LLM-PE_Terms_and_Conditions_Contracts), Apache 2.0</del> Only sentence level annotations, missing original full text
