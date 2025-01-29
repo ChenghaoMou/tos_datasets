@@ -134,6 +134,25 @@ print(DocumentQA.model_validate_json(ds["train"]["document"][0]))
 
 </details>
 
+### PolicyIE
+
+From [PolicyIE](https://github.com/wasiahmad/PolicyIE), MIT (subset: `privacy_glue/policy_ie`).
+
+<details>
+<summary>Code</summary>
+
+```python
+import datasets
+from tos_datasets.proto import DocumentSequenceClassification, DocumentEvent
+
+ds = datasets.load_dataset("chenghao/tos_pp_dataset", "privacy_glue/policy_ie")
+
+print(DocumentSequenceClassification.model_validate_json(ds["train"]["type_i"][0]))
+print(DocumentEvent.model_validate_json(ds["train"]["type_ii"][0]))
+```
+
+</details>
+
 ## WIP
 
 - <del>[Annotated Italian TOS sentences](https://github.com/i3-fbk/LLM-PE_Terms_and_Conditions_Contracts), Apache 2.0</del> Only sentence level annotations, missing original full text

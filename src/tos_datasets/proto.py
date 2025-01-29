@@ -31,11 +31,36 @@ class QA(BaseModel):
     is_impossible: Annotated[bool, "Whether the question is impossible to answer"]
 
 
+class Tag(BaseModel):
+    tag: Annotated[str, "The label for a span"]
+    start: Annotated[int, "The start index of the answer in the document, inclusive"]
+    end: Annotated[int, "The end index of the answer in the document, exclusive"]
+    comment: Annotated[str | None, "Additional information for the span"] = None
+
+
+class Event(BaseModel):
+    event_type: Annotated[str, "The event annotated"]
+    trigger: Annotated[Tag, "The trigger of the event"]
+    arguments: Annotated[list[Tag], "The arguments for the event"]
+
+
 class Classification(BaseModel):
     level: Annotated[str, "The level of the classification"]
     labels: Annotated[list[str], "The labels of the classification"]
-    label_definitions: Annotated[list[list[str]] | None, "The definitions of the labels"] = None
-    
+    label_definitions: Annotated[
+        list[list[str]] | None, "The definitions of the labels"
+    ] = None
+
+
+class DocumentSequenceClassification(BaseModel):
+    document: Document = Field(..., description="The document")
+    tags: list[Tag] = Field(..., description="The annotations of the document")
+
+
+class DocumentEvent(BaseModel):
+    document: Document = Field(..., description="The document")
+    events: list[Event] = Field(..., description="The events of the document")
+
 
 class DocumentQA(BaseModel):
     document: Document = Field(..., description="The document to answer the question")
@@ -44,7 +69,10 @@ class DocumentQA(BaseModel):
 
 class DocumentClassification(BaseModel):
     document: Annotated[Document, "The document to classify"]
-    classifications: Annotated[list[Classification], "The classifications of the document"]
+    classifications: Annotated[
+        list[Classification], "The classifications of the document"
+    ]
+
 
 class Service(BaseModel):
     name: Annotated[str, "The name of the service"]
